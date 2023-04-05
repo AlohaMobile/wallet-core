@@ -57,7 +57,11 @@ Address::Address(const std::string& string) {
     }
 
     auto toInt = [](std::string_view s) -> std::optional<std::size_t> {
+#ifndef _WINDOWS
         if (std::size_t value = 0; std::from_chars(s.begin(), s.end(), value).ec == std::errc{}) {
+#else
+        if (std::size_t value = 0; std::from_chars(s.data(), s.data() + s.size(), value).ec == std::errc{}) {
+#endif
             return value;
         } else {
             return std::nullopt;

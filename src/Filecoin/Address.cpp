@@ -10,6 +10,10 @@
 
 #include "../Base32.h"
 
+#ifdef _WINDOWS
+#include <algorithm>
+#endif
+
 namespace TW::Filecoin {
 
 static const char BASE32_ALPHABET_FILECOIN[] = "abcdefghijklmnopqrstuvwxyz234567";

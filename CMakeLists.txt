@@ -32,7 +32,12 @@ target_link_directories(${PROJECT_NAME}_INTERFACE INTERFACE ${WALLET_CORE_RS_TAR
 set_project_warnings(${PROJECT_NAME}_INTERFACE)
 
 add_subdirectory(trezor-crypto)
+
+if (WIN32)
+set(WALLET_CORE_RS_LIB wallet_core_rs.lib)
+else ()
 set(WALLET_CORE_RS_LIB libwallet_core_rs.a)
+endif()
 
 set(WALLET_CORE_BINDGEN ${WALLET_CORE_RS_TARGET_DIR}/release/${WALLET_CORE_RS_LIB})
 if (TW_COMPILE_WASM)
@@ -143,3 +148,7 @@ install(
 )
 
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+if (WIN32)
+include_directories(${NLOHMANN_ROOT})
+endif ()

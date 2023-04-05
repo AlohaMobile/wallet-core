@@ -19,6 +19,9 @@ int main(int argc, char** argv) {
     path = std::filesystem::canonical(path);
     // root path
     path = path.parent_path().parent_path().parent_path();
+#ifdef _WINDOWS
+    path = path.parent_path();
+#endif
     TESTS_ROOT = path.append("tests").string();
     std::cout<<"TESTS_ROOT: "<<path<<std::endl;
     ::testing::InitGoogleTest(&argc, argv);

@@ -16,6 +16,11 @@
 #include <boost/archive/iterators/binary_from_base64.hpp>
 #include <boost/archive/iterators/transform_width.hpp>
 
+#ifdef _WINDOWS
+#include <basetsd.h>
+typedef SSIZE_T ssize_t;
+#endif
+
 using namespace TW;
 
 namespace TW::CommonTON {

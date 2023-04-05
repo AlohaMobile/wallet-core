@@ -40,11 +40,17 @@ set_target_properties(tests
 option(CODE_COVERAGE "Enable coverage reporting" OFF)
 if(CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     # Add required flags (GCC & LLVM/Clang)
+if (WIN32)
+    target_compile_options(tests INTERFACE
+        --coverage # sets all required flags
+    )
+else ()
     target_compile_options(tests INTERFACE
         -O0        # no optimization
         -g         # generate debug info
         --coverage # sets all required flags
     )
+endif ()
     if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.13)
         target_link_options(tests INTERFACE --coverage)
     else()
@@ -53,3 +59,8 @@ if(CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
 endif()
 
 add_test(NAME example_test COMMAND tests)
+
+if (WIN32)
+include_directories(${NLOHMANN_ROOT})
+target_link_libraries(tests Ws2_32.lib Userenv.lib)
+endif()
