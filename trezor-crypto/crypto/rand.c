@@ -60,6 +60,8 @@ void __attribute__((weak)) random_buffer(uint8_t *buf, size_t len) {
 
 #else
 
+// Copied from Wallet Core on Windows project (https://github.com/kaetemi/wallet-core-windows)
+
 #include <Windows.h>
 #include <bcrypt.h>
 
