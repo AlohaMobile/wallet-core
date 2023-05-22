@@ -15,9 +15,9 @@ settings:
 
 targets:
   WalletCoreCommon:
-    type: framework.static
-    platform: [iOS, macOS]
-    deploymentTarget: 
+    type: framework
+    platform: [iOS]
+    deploymentTarget:
       iOS: 12.0
       macOS: 10.14
     groups:
@@ -46,6 +46,43 @@ targets:
     settings:
       SKIP_INSTALL: false
       SUPPORTS_MACCATALYST: true
+      INFOPLIST_FILE: 'Info.plist'
+      CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION: YES_ERROR
+      CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: $(inherited) false
+      OTHER_CFLAGS: $(inherited) -Wno-comma
+      OTHER_LDFLAGS: $(inherited) -ObjC -framework Foundation -framework Security
+
+  WalletCoreCommonStatic:
+    type: framework.static
+    platform: [macOS]
+    deploymentTarget:
+      iOS: 12.0
+      macOS: 10.14
+    groups:
+      - ${platform}
+    sources:
+      - path: include
+        headerVisibility: public
+        excludes:
+          - "TrustWalletCore/TW*Proto.h"
+      - path: wallet-core
+        headerVisibility: project
+        excludes:
+          - ".vscode"
+          - "proto/*.proto"
+          - "Tron/Protobuf/*.proto"
+          - "Zilliqa/Protobuf/*.proto"
+          - "Cosmos/Protobuf/*.proto"
+          - "Hedera/Protobuf/*.proto"
+    dependencies:
+      - target: trezor-crypto_${platform}
+        link: true
+      - target: protobuf_${platform}
+        link: true
+      - sdk: libc++.tbd
+      - framework: WalletCoreRs.xcframework
+    settings:
+      SKIP_INSTALL: false
       INFOPLIST_FILE: 'Info.plist'
       CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION: YES_ERROR
       CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: $(inherited) false
