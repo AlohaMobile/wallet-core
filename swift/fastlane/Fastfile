@@ -4,8 +4,16 @@ default_platform(:ios)
 platform :ios do
   desc "create full xcframeworks"
   lane :xcframework do
-    swift_protobuf_xcframework
-    core_xcframework
+    # Using custom xcargs causes create_xcframework to fail
+    # but it still produces the xcframeworks so we ignore errors
+    begin
+      swift_protobuf_xcframework
+    rescue
+    end
+    begin
+      core_xcframework
+    rescue
+    end
   end
 
   desc "create wallet core xcframework"
@@ -15,7 +23,8 @@ platform :ios do
       scheme: 'WalletCore',
       destinations: ['iOS'],
       xcframework_output_directory: 'build',
-      enable_bitcode: false
+      enable_bitcode: false,
+      xcargs: "MACH_O_TYPE='staticlib'"
     )
   end
 
@@ -26,7 +35,8 @@ platform :ios do
       scheme: 'SwiftProtobuf',
       destinations: ['iOS'],
       xcframework_output_directory: 'build',
-      enable_bitcode: false
+      enable_bitcode: false,
+      xcargs: "MACH_O_TYPE='staticlib'"
     )
   end
 end

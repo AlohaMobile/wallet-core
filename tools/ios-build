@@ -54,9 +54,13 @@ create_xc_framework() {
 main() {
     init
     build_mac_x64_arm64
-    build_ios_mac_catalyst
-    build_ios_arm64 && build_ios_simulator
-    create_xc_framework
+# We don't need iOS builds here.
+# For iOS we use the ios-xcframework build script instead which produces xcframework with Swift wrappers.
+# For macOS we don't need Swift wrappers as we use this compiled framework only from Go for development purposes.
+#
+#    build_ios_mac_catalyst
+#    build_ios_arm64 && build_ios_simulator
+#    create_xc_framework
 }
 
 main
