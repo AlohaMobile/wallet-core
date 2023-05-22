@@ -12,6 +12,7 @@ android {
         externalNativeBuild {
             cmake {
                 arguments "-DCMAKE_BUILD_TYPE=Release", "-DTW_UNITY_BUILD=ON"
+                targets "TrustWalletCore" 
             }
         }
     }
