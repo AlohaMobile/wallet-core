@@ -4,7 +4,7 @@
 # terms governing use, modification, and redistribution, is contained in the
 # file LICENSE at the root of the source code distribution tree.
 
-set(TW_WARNING_FLAGS 
+set(TW_WARNING_FLAGS
     -W
     -Wall
     -Wextra
@@ -24,6 +24,27 @@ set(TW_WARNING_FLAGS
     -Wformat-security
     -Wno-missing-braces
 )
+
+if (WIN32)
+set(TW_WARNING_FLAGS
+    -Wno-reserved-id-macro
+    -Wno-implicit-int-conversion
+    -Wno-shorten-64-to-32
+    -Wno-sign-conversion
+    -Wno-missing-prototypes
+    -Wno-extra-semi-stmt
+    -Wno-missing-variable-declarations
+    -Wno-deprecated-declarations
+    -Wno-cast-qual
+    -Wno-vla
+    -Wno-pointer-to-int-cast
+    -Wno-cast-align
+    -Wno-implicit-fallthrough
+    -Wno-unused-macros
+    -Wno-comma
+    -Wno-newline-eof
+)
+endif ()
 
 add_library(TrezorCrypto
     crypto/bignum.c crypto/ecdsa.c crypto/curves.c crypto/secp256k1.c crypto/rand.c crypto/hmac.c crypto/bip32.c crypto/bip39.c crypto/slip39.c crypto/pbkdf2.c crypto/base58.c crypto/base32.c

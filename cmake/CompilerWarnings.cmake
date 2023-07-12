@@ -64,6 +64,63 @@ target_compile_options(
         -Wformat=2 # warn on security issues around functions that format output
 )
 
+if (WIN32)
+target_compile_options(
+        tw_error_settings
+        INTERFACE
+        -Wno-reserved-id-macro
+        -Wno-c++98-compat
+        -Wno-c++98-compat-pedantic
+        -Wno-c++98-c++11-c++14-compat
+        -Wno-sign-conversion
+        -Wno-nullability-extension
+        -Wno-suggest-override
+        -Wno-zero-as-null-pointer-constant
+        -Wno-old-style-cast
+        -Wno-extra-semi
+        -Wno-shadow-field-in-constructor
+        -Wno-exit-time-destructors
+        -Wno-global-constructors
+        -Wno-shadow-field
+        -Wno-deprecated-dynamic-exception-spec
+        -Wno-covered-switch-default
+        -Wno-implicit-int-conversion
+        -Wno-inconsistent-missing-destructor-override
+        -Wno-extra-semi-stmt
+        -Wno-missing-variable-declarations
+        -Wno-float-equal
+        -Wno-missing-prototypes
+        -Wno-suggest-destructor-override
+        -Wno-shadow-uncaptured-local
+        -Wno-undef
+        -Wno-switch-enum
+        -Wno-undefined-func-template
+        -Wno-deprecated-declarations
+        -Wno-deprecated-copy-dtor
+        -Wno-unused-result
+        -Wno-newline-eof
+        -Wno-documentation-unknown-command
+        -Wno-header-hygiene
+        -Wno-cast-qual
+        -Wno-documentation
+        -Wno-documentation-deprecated-sync
+        -Wno-reserved-identifier
+        -Wno-deprecated
+        -Wno-ctad-maybe-unsupported
+        -Wno-unused-exception-parameter
+        -Wno-implicit-int-float-conversion
+        -Wno-tautological-unsigned-zero-compare
+        -Wno-unused-template
+        -Wno-nullable-to-nonnull-conversion
+        -Wno-unreachable-code-break
+        -Wno-implicit-fallthrough
+        -Wno-unused-variable
+        -Wno-unused-parameter
+        -Wno-unused-macros
+        -Wno-tautological-type-limit-compare
+)
+endif ()
+
 if (TW_WARNINGS_AS_ERRORS)
     target_compile_options(
             tw_error_settings

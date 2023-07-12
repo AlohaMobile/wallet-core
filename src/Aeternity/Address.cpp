@@ -51,7 +51,12 @@ bool Address::checkType(const std::string& type) {
 }
 
 bool Address::checkPayload(const std::string& payload) {
-    unsigned long base58 = Base58::decodeCheck(payload).size();
+    #ifdef _WIN32
+        size_t base58
+    #else
+        unsigned long base58
+    #endif
+           = Base58::decodeCheck(payload).size();
     return base58 == size;
 }
 

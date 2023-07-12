@@ -69,3 +69,5 @@ samples/cpp/sample
 
 # Rust target build
 **/target/
+
+protobuf-plugin/

@@ -58,7 +58,7 @@
 #error This code requires 8-bit bytes
 #endif
 
-#if defined __STDC__ && __STDC_VERSION__ >= 199901L
+#if (defined __STDC__ && __STDC_VERSION__ >= 199901L) || defined _WIN32
 
 #include <stdint.h>
 
