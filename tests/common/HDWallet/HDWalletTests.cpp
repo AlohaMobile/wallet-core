@@ -8,6 +8,7 @@
 #include "Bitcoin/Address.h"
 #include "Bitcoin/CashAddress.h"
 #include "Bitcoin/SegwitAddress.h"
+#include "Cosmos/Address.h"
 #include "Sui/Address.h"
 #include "Coin.h"
 #include "Ethereum/Address.h"
@@ -449,7 +450,7 @@ TEST(HDWallet, SuiKey) {
         EXPECT_EQ(hex(privateKey.bytes), "3823dce5288ab55dd1c00d97e91933c613417fdb282a0b8b01a7f5f5a533b266");
         auto pubkey = privateKey.getPublicKey(TWPublicKeyTypeED25519);
         EXPECT_EQ(hex(pubkey.bytes), "6a7cdeec16a75c0ff6787bc2356109469033022bb10e826c9d443a9f1fc0bd8e");
-        EXPECT_EQ(TW::Sui::Address(pubkey).string(), "0x2db500ac919cdde351ac36e3711d832c6db97669");
+        EXPECT_EQ(TW::Sui::Address(pubkey).string(), "0xd575ad7f18e948462a5cf698f564ef394a752a71fec62493af8a055c012c0d50");
     }
 }
 
@@ -603,6 +604,18 @@ TEST(HDWallet, FromMnemonicImmutableXMainnetFromSignature) {
         auto starkSignature = StarkEx::MessageSigner::signMessage(starkPrivKey, starkMsg);
         ASSERT_EQ(starkSignature, "04cf5f21333dd189ada3c0f2a51430d733501a9b1d5e07905273c1938cfb261e05b6013d74adde403e8953743a338c8d414bb96bf69d2ca1a91a85ed2700a528");
         ASSERT_TRUE(StarkEx::MessageSigner::verifyMessage(starkPubKey, starkMsg, starkSignature));
+    }
+}
+
+TEST(HDWallet, StargazeKey) {
+    const auto derivPath = "m/44'/118'/0'/0/0";
+    HDWallet wallet = HDWallet("rude segment two fury you output manual volcano sugar draft elite fame", "");
+    {
+        const auto privateKey = wallet.getKey(TWCoinTypeStargaze, DerivationPath(derivPath));
+        EXPECT_EQ(hex(privateKey.bytes), "a498a9ee41af9bab5ef2a8be63d5c970135c3c109e70efc8c56c534e6636b433");
+        const auto p = privateKey.getPublicKey(TWPublicKeyTypeSECP256k1);
+        EXPECT_EQ(hex(p.bytes), "02cbfdb5e472893322294e60cf0883d43df431e1089d29ecb447a9e6d55045aae5");
+        EXPECT_EQ(Cosmos::Address(TWCoinTypeStargaze ,p).string(), "stars1mry47pkga5tdswtluy0m8teslpalkdq02a8nhy");
     }
 }
 
