@@ -47,7 +47,7 @@ Address::Address(const TW::PublicKey& publicKey) {
     bytes[1] = mainnetId[1];
     // Address Type
     bytes[2] = addressType;
-#ifndef _WINDOWS
+#ifndef _WIN32
     ecdsa_get_pubkeyhash(publicKey.bytes.data(), HASHER_SHA2_RIPEMD, bytes.begin() + 3);
 #else
     ecdsa_get_pubkeyhash(publicKey.bytes.data(), HASHER_SHA2_RIPEMD, bytes.data() + 3);

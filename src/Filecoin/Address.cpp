@@ -10,7 +10,7 @@
 
 #include "../Base32.h"
 
-#ifdef _WINDOWS
+#ifdef _WIN32
 #include <algorithm>
 #endif
 

@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
     path = std::filesystem::canonical(path);
     // root path
     path = path.parent_path().parent_path().parent_path();
-#ifdef _WINDOWS
+#ifdef _WIN32
     path = path.parent_path();
 #endif
     TESTS_ROOT = path.append("tests").string();
