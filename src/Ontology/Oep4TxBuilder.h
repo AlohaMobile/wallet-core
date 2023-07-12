@@ -10,7 +10,9 @@
 
 #include "../proto/Ontology.pb.h"
 
+#ifndef _WIN32
 #include <TrustWalletCore/TWOntologyProto.h>
+#endif
 
 namespace TW::Ontology {
 

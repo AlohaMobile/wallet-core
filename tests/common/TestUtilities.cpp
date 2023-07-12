@@ -8,6 +8,7 @@
 
 #include <string>
 #include <fstream>
+#include <filesystem>
 
 using namespace std;
 
@@ -15,7 +16,13 @@ using namespace std;
 string getTestTempDir(void) {
     // In general, tests should not use hardcoded "/tmp", but TEST_TMPDIR env var.
     const char* fromEnvironment = getenv("TEST_TMPDIR");
-    if (fromEnvironment == NULL || fromEnvironment[0] == '\0') { return "/tmp"; }
+    if (fromEnvironment == NULL || fromEnvironment[0] == '\0') {
+#ifdef _WIN32
+        return std::filesystem::temp_directory_path().string();
+#else
+        return "/tmp";
+#endif
+    }
     return string(fromEnvironment);
 }
 

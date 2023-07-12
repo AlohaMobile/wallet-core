@@ -29,7 +29,19 @@
 #include "bip32.h"
 #include "ecdsa.h"
 
+#ifdef _WIN32
+#ifdef __cplusplus
+extern "C" {
+#endif
+#endif /* _WIN32 */
+
 extern const ecdsa_curve nist256p1;
 extern const curve_info nist256p1_info;
+
+#ifdef _WIN32
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
+#endif /* _WIN32 */
 
 #endif

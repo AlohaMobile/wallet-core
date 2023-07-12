@@ -246,7 +246,7 @@ TEST(CardanoSigning, SignTransfer1) {
 }
 
 TEST(CardanoSigning, PlanAndSignTransfer1) {
-    uint amount = 6000000;
+    unsigned int amount = 6000000;
     auto input = createSampleInput(amount);
 
     {

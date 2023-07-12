@@ -212,6 +212,10 @@ set_target_properties(
 
 target_compile_options(protobuf PRIVATE -DHAVE_PTHREAD=1 -Wno-inconsistent-missing-override -Wno-shorten-64-to-32 -Wno-invalid-noreturn)
 
+if (WIN32)
+target_compile_options(protobuf PRIVATE -D_CRT_SECURE_NO_WARNINGS -Wno-unused-const-variable)
+endif()
+
 install(TARGETS protobuf
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

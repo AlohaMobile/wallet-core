@@ -32,7 +32,12 @@ target_link_directories(${PROJECT_NAME}_INTERFACE INTERFACE ${WALLET_CORE_RS_TAR
 set_project_warnings(${PROJECT_NAME}_INTERFACE)
 
 add_subdirectory(trezor-crypto)
+
+if (WIN32)
+set(WALLET_CORE_RS_LIB wallet_core_rs.lib Ws2_32.lib Userenv.lib)
+else()
 set(WALLET_CORE_RS_LIB libwallet_core_rs.a)
+endif()
 
 set(WALLET_CORE_BINDGEN ${WALLET_CORE_RS_TARGET_DIR}/release/${WALLET_CORE_RS_LIB})
 if (TW_COMPILE_WASM)
@@ -75,6 +80,15 @@ if (${ANDROID})
         set(WALLET_CORE_BINDGEN ${WALLET_CORE_RS_TARGET_DIR}/x86_64-linux-android/release/${WALLET_CORE_RS_LIB})
     endif ()
     target_link_libraries(TrustWalletCore PUBLIC ${WALLET_CORE_BINDGEN} ${PROJECT_NAME}_INTERFACE PRIVATE TrezorCrypto protobuf ${log-lib} Boost::boost)
+elseif (WIN32)
+    message("Configuring for Windows")
+    file(GLOB_RECURSE sources src/*.c src/*.cc src/*.cpp src/*.h)
+    add_library(TrustWalletCore OBJECT ${sources} ${PROTO_SRCS} ${PROTO_HDRS})
+    target_link_libraries(TrustWalletCore PUBLIC ${WALLET_CORE_BINDGEN} ${PROJECT_NAME}_INTERFACE TrezorCrypto protobuf Boost::boost)
+
+    add_library(TrustWalletCoreStatic STATIC $<TARGET_OBJECTS:TrustWalletCore>)
+    add_library(TrustWalletCoreShared SHARED $<TARGET_OBJECTS:TrustWalletCore>)
+    target_link_libraries(TrustWalletCoreShared PUBLIC ${WALLET_CORE_BINDGEN} ${PROJECT_NAME}_INTERFACE TrezorCrypto protobuf Boost::boost)
 else ()
     message("Configuring standalone")
     file(GLOB_RECURSE sources src/*.c src/*.cc src/*.cpp src/*.h)
@@ -131,10 +145,21 @@ endif ()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/swift/cpp.xcconfig.in ${CMAKE_CURRENT_SOURCE_DIR}/swift/cpp.xcconfig @ONLY)
 
+if (NOT WIN32)
 install(TARGETS TrustWalletCore
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
         )
+else()
+install(TARGETS TrustWalletCoreStatic
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        )
+install(TARGETS TrustWalletCoreShared
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        )
+endif()
 
 install(
         DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/src/
@@ -143,3 +168,8 @@ install(
 )
 
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+if (WIN32)
+include_directories(${NLOHMANN_ROOT})
+set_target_properties(TrustWalletCoreShared PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+endif ()
