@@ -23,7 +23,7 @@
 
 #include <TrezorCrypto/rand.h>
 
-#ifndef _WINDOWS
+#ifndef _WIN32
 
 #include <fcntl.h>
 #include <sys/types.h>
@@ -58,7 +58,7 @@ void __attribute__((weak)) random_buffer(uint8_t *buf, size_t len) {
     close(randomData);
 }
 
-#else
+#else /* #ifndef _WIN32 */
 
 // Copied from Wallet Core on Windows project (https://github.com/kaetemi/wallet-core-windows)
 
@@ -124,8 +124,7 @@ void random_release() {
     (void)InterlockedExchange(&random_lock, 0);
 }
 
-// [wallet-core]
-uint32_t  __attribute__((weak)) random32() {
+uint32_t random32() {
     BCRYPT_ALG_HANDLE prov;
     uint32_t res;
     if (!(prov = random_init())) {
@@ -138,7 +137,7 @@ uint32_t  __attribute__((weak)) random32() {
     return res;
 }
 
-void  __attribute__((weak)) random_buffer(uint8_t *buf, size_t len) {
+void random_buffer(uint8_t *buf, size_t len) {
     BCRYPT_ALG_HANDLE prov;
     if (!(prov = random_init())) {
         return;
@@ -153,4 +152,4 @@ void  __attribute__((weak)) random_buffer(uint8_t *buf, size_t len) {
 }
 
 
-#endif
+#endif /* #ifndef _WIN32 */

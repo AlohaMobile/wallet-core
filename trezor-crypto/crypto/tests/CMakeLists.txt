@@ -4,6 +4,7 @@
 # terms governing use, modification, and redistribution, is contained in the
 # file LICENSE at the root of the source code distribution tree.
 
+if (NOT WIN32)
 enable_testing()
 
 find_library(check PATH ${CMAKE_SOURCE_DIR}/build/local/lib/pkgconfig NO_DEFAULT_PATH)
@@ -15,3 +16,4 @@ target_link_directories(TrezorCryptoTests PRIVATE ${PREFIX}/lib)
 target_include_directories(TrezorCryptoTests PRIVATE ${CMAKE_SOURCE_DIR}/src ${PREFIX}/include)
 
 add_test(NAME test_check COMMAND TrezorCryptoTests)
+endif()

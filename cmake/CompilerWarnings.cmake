@@ -107,6 +107,17 @@ target_compile_options(
         -Wno-reserved-identifier
         -Wno-deprecated
         -Wno-ctad-maybe-unsupported
+        -Wno-unused-exception-parameter
+        -Wno-implicit-int-float-conversion
+        -Wno-tautological-unsigned-zero-compare
+        -Wno-unused-template
+        -Wno-nullable-to-nonnull-conversion
+        -Wno-unreachable-code-break
+        -Wno-implicit-fallthrough
+        -Wno-unused-variable
+        -Wno-unused-parameter
+        -Wno-unused-macros
+        -Wno-tautological-type-limit-compare
 )
 endif ()
 

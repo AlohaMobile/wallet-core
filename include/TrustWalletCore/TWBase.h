@@ -47,9 +47,14 @@
 // Marker for Protobuf types to be serialized across the interface
 #define PROTO(x) TWData *
 
+#ifndef __GNUC__    // gcc doesn't support __has_feature
 #if __has_feature(assume_nonnull)
 #define TW_ASSUME_NONNULL_BEGIN _Pragma("clang assume_nonnull begin")
 #define TW_ASSUME_NONNULL_END   _Pragma("clang assume_nonnull end")
+#else
+#define TW_ASSUME_NONNULL_BEGIN
+#define TW_ASSUME_NONNULL_END
+#endif
 #else
 #define TW_ASSUME_NONNULL_BEGIN
 #define TW_ASSUME_NONNULL_END
@@ -63,6 +68,7 @@
 #  define TW_DEPRECATED_FOR(since, replacement)
 #endif
 
+#ifndef __GNUC__
 #if !__has_feature(nullability)
 #ifndef _Nullable
 #define _Nullable
@@ -74,6 +80,18 @@
 #define _Null_unspecified
 #endif
 #endif
+#else
+#ifndef _Nullable
+#define _Nullable
+#endif
+#ifndef _Nonnull
+#define _Nonnull
+#endif
+#ifndef _Null_unspecified
+#define _Null_unspecified
+#endif
+#endif
+
 
 #include <stdbool.h>
 #include <stddef.h>
